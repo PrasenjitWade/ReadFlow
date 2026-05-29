@@ -2,7 +2,6 @@ import { Ebook, Order } from './types';
 
 // The store uses 100% native client-side storage (localStorage).
 // NO external server or database accounts are required!
-export const isSupabaseConfigured = false;
 export const databaseEngine = 'localStorage';
 
 // Initial high-fidelity eBook seed data for a professional presentation

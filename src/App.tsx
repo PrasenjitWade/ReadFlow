@@ -7,7 +7,7 @@ import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { UserDashboard } from './components/UserDashboard';
 import { AdminDashboard } from './components/AdminDashboard';
-import { db, isSupabaseConfigured } from './db';
+import { db } from './db';
 import { Ebook } from './types';
 import { CreditCard, CheckCircle2, ShieldAlert, Sparkles, BookOpen, Clock, Download, Bookmark, Layers, HardDrive, RefreshCw, MessageCircle, Instagram, Copy, Check, ArrowUpRight, QrCode, Mail, LogIn, LogOut, User, Shield } from 'lucide-react';
 
@@ -233,7 +233,7 @@ export default function App() {
     try {
       const addedBook = await db.addEbook(newBookPayload);
       setEbooks(prev => [addedBook, ...prev]);
-      showToast(`E-Asset metadata "${addedBook.title}" registered inside Supabase.`, 'success');
+      showToast(`E-Asset metadata "${addedBook.title}" successfully registered in store context.`, 'success');
     } catch (e) {
       showToast('Failed to insert new ebook', 'warn');
     }

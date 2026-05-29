@@ -273,7 +273,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
               <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-6">
                 <div>
                   <h3 className="font-display text-lg font-bold text-white tracking-tight">Account Integration Setup</h3>
-                  <p className="text-xs text-gray-400 mt-1">Update your email, tie in social sign-on credentials or connect Supabase Auth tokens.</p>
+                  <p className="text-xs text-gray-400 mt-1">Update your local credentials to sync downloaded ebooks with your profile.</p>
                 </div>
               </div>
 
@@ -281,7 +281,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({
               <div className="mb-6 p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10 flex gap-3 text-xs leading-relaxed text-gray-300">
                 <AlertCircle className="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-white">Supabase Auth System ready.</span> Standard login/signup elements below write profiles database records automatically. When running under "Demo Sandbox", values are saved to browsers local DB storage layout for fast zero-friction reviews.
+                  <span className="font-bold text-white">Digital Locker Active.</span> Standard credentials below write profile database records automatically. When running under "Demo Sandbox", values are saved to browsers local DB storage layout for fast zero-friction reviews.
                 </div>
               </div>
 

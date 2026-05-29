@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BookOpen, Shield, Library, LogOut, LogIn, Database, ChevronDown, User, Sparkles } from 'lucide-react';
-import { isSupabaseConfigured } from '../db';
 
 interface NavbarProps {
   currentRole: 'guest' | 'admin';
