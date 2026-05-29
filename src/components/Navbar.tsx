@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { BookOpen, Shield, Library, LogOut, LogIn, Database, ChevronDown, User, Sparkles } from 'lucide-react';
+import { BookOpen, Library, LogOut, ChevronDown, User, Sparkles } from 'lucide-react';
 
 interface NavbarProps {
-  currentRole: 'guest' | 'admin';
   userEmail: string | null;
-  onSwitchRole: (role: 'guest' | 'admin') => void;
-  onNavigate: (view: 'landing' | 'browse' | 'library' | 'admin') => void;
-  activeView: 'landing' | 'browse' | 'library' | 'admin';
+  onNavigate: (view: 'landing' | 'browse' | 'library') => void;
+  activeView: 'landing' | 'browse' | 'library';
+  onSignOut: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  currentRole,
   userEmail,
-  onSwitchRole,
   onNavigate,
-  activeView
+  activeView,
+  onSignOut
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -71,39 +69,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Library className="w-4 h-4" /> My Library
           </button>
-
-          {currentRole === 'admin' && (
-            <button 
-              id="nav-link-admin"
-              onClick={() => onNavigate('admin')}
-              className={`flex items-center gap-1.5 text-sm font-semibold tracking-wide border border-indigo-500/20 px-3.5 py-1.5 rounded-xl bg-indigo-500/10 transition-all duration-200 hover:bg-indigo-500/20 ${
-                activeView === 'admin' ? 'text-indigo-400 border-indigo-400/50' : 'text-gray-300 hover:text-indigo-300'
-              }`}
-            >
-              <Shield className="w-4 h-4" /> Admin Console
-            </button>
-          )}
         </div>
 
         {/* Profile Actions */}
         <div className="flex items-center gap-4">
           
-          {/* Interactive Profile Dropdown / Role Switcher */}
+          {/* Interactive Profile Dropdown */}
           <div className="relative">
             <button
               id="profile-dropdown-btn"
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/5 text-xs text-gray-300 hover:border-white/10 active:scale-95 transition-all duration-200"
             >
-              <div className={`h-5 w-5 rounded-full flex items-center justify-center ${
-                currentRole === 'admin' ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-300'
-              }`}>
-                {currentRole === 'admin' ? <Shield className="w-3 h-3 text-indigo-200" /> : <User className="w-3 h-3 text-gray-300" />}
+              <div className="h-5 w-5 rounded-full flex items-center justify-center bg-gray-700 text-gray-300">
+                <User className="w-3 h-3 text-gray-300" />
               </div>
-              <span className="font-mono max-w-[100px] truncate">
-                {currentRole === 'admin' 
-                  ? 'Author (Admin)' 
-                  : 'Guest Browser'}
+              <span className="font-mono max-w-[120px] truncate">
+                {userEmail ? userEmail.split('@')[0] : 'Guest Reader'}
               </span>
               <ChevronDown className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -111,78 +93,46 @@ export const Navbar: React.FC<NavbarProps> = ({
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-[#0c111d] border border-white/10 p-2.5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                 <div className="px-3 py-2 border-b border-white/5 mb-2">
-                  <p className="text-[10px] font-mono uppercase tracking-wider text-gray-500">Active Account</p>
+                  <p className="text-[10px] font-mono uppercase tracking-wider text-gray-500">Digital Locker Space</p>
                   <p className="text-xs font-semibold text-white truncate mt-0.5">
-                    {userEmail || 'Unauthenticated'}
+                    {userEmail || 'Guest (Demo Sandbox)'}
                   </p>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <span className={`h-1.5 w-1.5 rounded-full ${currentRole === 'admin' ? 'bg-indigo-400' : 'bg-zinc-500'}`} />
-                    <span className="text-[9px] font-mono text-gray-400 capitalize">{currentRole === 'admin' ? 'admin' : 'guest'} role level</span>
+                    <span className={`h-1.5 w-1.5 rounded-full ${userEmail ? 'bg-indigo-400' : 'bg-zinc-500'}`} />
+                    <span className="text-[9px] font-mono text-gray-400">
+                      {userEmail ? 'Synchronized' : 'Offline Session'}
+                    </span>
                   </div>
                 </div>
  
-                <p className="px-3 text-[9px] text-gray-500 font-mono uppercase tracking-wider mb-1.5 mt-2 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-indigo-400" /> Quick Role Simulator
-                </p>
- 
-                <div className="flex flex-col gap-1">
-                  <button
-                    id="role-switch-guest"
-                    onClick={() => {
-                      onSwitchRole('guest');
-                      setDropdownOpen(false);
-                      onNavigate('landing');
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-left transition-colors font-medium ${
-                      currentRole === 'guest' ? 'bg-white/5 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                    }`}
-                  >
-                    <span>Guest Browser</span>
-                    {currentRole === 'guest' && <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />}
-                  </button>
- 
-                  <button
-                    id="role-switch-admin"
-                    onClick={() => {
-                      onSwitchRole('admin');
-                      setDropdownOpen(false);
-                      onNavigate('admin');
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs text-left transition-colors font-medium ${
-                      currentRole === 'admin' ? 'bg-indigo-600/20 text-indigo-300' : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                    }`}
-                  >
-                    <span className="flex items-center gap-1"><Shield className="w-3 h-3 text-indigo-400" /> Author Admin</span>
-                    {currentRole === 'admin' && <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />}
-                  </button>
-                </div>
- 
-                <div className="border-t border-white/5 mt-2.5 pt-2 flex flex-col gap-1">
-                  {currentRole === 'admin' ? (
+                {userEmail ? (
+                  <div className="flex flex-col gap-1">
                     <button
                       id="role-logout-btn"
                       onClick={() => {
-                        onSwitchRole('guest');
+                        onSignOut();
                         setDropdownOpen(false);
                         onNavigate('landing');
                       }}
                       className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-left text-red-400 hover:bg-red-500/10 transition-colors"
                     >
-                      <LogOut className="w-3.5 h-3.5" /> Exit Admin
+                      <LogOut className="w-3.5 h-3.5" /> Sign Out Profile
                     </button>
-                  ) : (
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-1">
                     <button
-                      id="role-login-btn"
+                      id="go-to-locker-btn"
                       onClick={() => {
                         setDropdownOpen(false);
-                        onNavigate('admin');
+                        onNavigate('library');
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-left text-indigo-400 hover:bg-indigo-500/10 transition-colors"
+                      className="w-full flex items-center gap-1.5 text-left px-3 py-2 rounded-xl text-xs font-medium text-indigo-400 hover:bg-indigo-500/10 transition-colors"
                     >
-                      <LogIn className="w-3.5 h-3.5" /> Admin Portal Login
+                      <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> Initialize Locker / Sign In
                     </button>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

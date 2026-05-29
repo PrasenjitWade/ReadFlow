@@ -6,7 +6,6 @@ import { EbookDetailModal } from './components/EbookDetailModal';
 import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { UserDashboard } from './components/UserDashboard';
-import { AdminDashboard } from './components/AdminDashboard';
 import { db } from './db';
 import { Ebook } from './types';
 import { CreditCard, CheckCircle2, ShieldAlert, Sparkles, BookOpen, Clock, Download, Bookmark, Layers, HardDrive, RefreshCw, MessageCircle, Instagram, Copy, Check, ArrowUpRight, QrCode, Mail, LogIn, LogOut, User, Shield } from 'lucide-react';
@@ -17,7 +16,7 @@ export default function App() {
     return localStorage.getItem('store_whatsapp_number') || '919323719266';
   });
   const [instagramUsername, setInstagramUsername] = useState(() => {
-    return localStorage.getItem('store_instagram_username') || 'prasenjitwade004';
+    return localStorage.getItem('store_instagram_username') || 'read_flow_.4';
   });
   
   // Interactive copy state
@@ -32,13 +31,9 @@ export default function App() {
     showToast('Direct payment contact credentials updated!', 'success');
   };
 
-  // Page routing state: 'landing' | 'browse' | 'library' | 'admin'
-  const [activeView, setActiveView] = useState<'landing' | 'browse' | 'library' | 'admin'>('landing');
+  // Page routing state: 'landing' | 'browse' | 'library'
+  const [activeView, setActiveView] = useState<'landing' | 'browse' | 'library'>('landing');
   
-  // Authentication Role simulation state: 'guest' | 'admin'
-  const [currentRole, setCurrentRole] = useState<'guest' | 'admin'>(() => {
-    return (localStorage.getItem('user_role') as 'guest' | 'admin') || 'guest';
-  });
   const [userEmail, setUserEmail] = useState<string | null>(() => {
     return localStorage.getItem('user_email') || null;
   });
@@ -76,15 +71,14 @@ export default function App() {
     }, 4000);
   };
 
-  // Synchronize dynamic role changes with local storage
+  // Synchronize dynamic profile changes with local storage
   useEffect(() => {
-    localStorage.setItem('user_role', currentRole);
     if (userEmail) {
       localStorage.setItem('user_email', userEmail);
     } else {
       localStorage.removeItem('user_email');
     }
-  }, [currentRole, userEmail]);
+  }, [userEmail]);
 
   // Read data from DB on load and active role changes
   useEffect(() => {
@@ -101,6 +95,13 @@ export default function App() {
       }
     };
     loadEbooks();
+
+    // Reset old Instagram handle cached in user's browser localStorage if any
+    const cachedIg = localStorage.getItem('store_instagram_username');
+    if (cachedIg === 'prasenjitwade004') {
+      localStorage.setItem('store_instagram_username', 'read_flow_.4');
+      setInstagramUsername('read_flow_.4');
+    }
   }, []);
 
   // Sync purchases and wishes based on simulated userEmail
@@ -120,19 +121,13 @@ export default function App() {
         // Sync purchased list
         const ordersList = await db.getOrders(userEmail);
         const purchasedIds = ordersList.map(o => o.ebook_id);
-        
-        // Admin gets absolute automatic credentials to all assets
-        if (currentRole === 'admin') {
-          setPurchasedBookIds(ebooks.map(b => b.id));
-        } else {
-          setPurchasedBookIds(purchasedIds);
-        }
+        setPurchasedBookIds(purchasedIds);
       } catch (err) {
         console.error(err);
       }
     };
     syncUserStore();
-  }, [userEmail, ebooks, currentRole]);
+  }, [userEmail, ebooks]);
 
   // --- ACTIONS ---
 
@@ -304,18 +299,13 @@ export default function App() {
 
       {/* Header element */}
       <Navbar
-        currentRole={currentRole}
         userEmail={userEmail}
-        onSwitchRole={(role) => {
-          setCurrentRole(role);
-          if (role === 'admin') {
-            setUserEmail('prasenjitwade09@gmail.com');
-          } else {
-            setUserEmail(localStorage.getItem('user_email') || null);
-          }
-        }}
         onNavigate={setActiveView}
         activeView={activeView}
+        onSignOut={() => {
+          setUserEmail(null);
+          showToast('Signed out of profile. Active digital locker cleared.', 'info');
+        }}
       />
 
       {/* Primary view routers */}
@@ -491,18 +481,7 @@ export default function App() {
           />
         )}
 
-        {/* VIEW 4: ADMIN MANAGEMENT WORKSPACE */}
-        {activeView === 'admin' && (
-          <AdminDashboard
-            ebooks={ebooks}
-            categories={categories}
-            onAddCategory={handleAddCategory}
-            onAddEbook={handleAddEbook}
-            onUpdateEbook={handleUpdateEbook}
-            onDeleteEbook={handleDeleteEbook}
-            onUploadFile={db.uploadFile}
-          />
-        )}
+
 
       </main>
 

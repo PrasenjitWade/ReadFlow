@@ -1,22 +1,44 @@
 import { Ebook, Order } from './types';
+import aiToolkitCover from './assets/images/ai_toolkit_1780038710481.png';
 
 // The store uses 100% native client-side storage (localStorage).
 // NO external server or database accounts are required!
 export const databaseEngine = 'localStorage';
 
 // Initial high-fidelity eBook seed data for a professional presentation
-const DEFAULT_PREMIUM_EBOOKS: Ebook[] = [];
+const DEFAULT_PREMIUM_EBOOKS: Ebook[] = [
+  {
+    id: 'book-ai-toolkit',
+    title: 'The AI Toolkit',
+    author: 'Prasenjit',
+    description: '25+ Powerful Ai Tools Every Students & Creator Should know',
+    price: 10,
+    category: 'AI & Productivity',
+    cover_url: aiToolkitCover,
+    pdf_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+    rating: 4.0,
+    created_at: '2026-05-29T00:00:00.000Z',
+    highlights: [],
+    format: 'Pdf',
+    file_size: '724kb'
+  }
+];
 
 // Seed initial LocalStorage data if missing
 const initializeLocalStorage = () => {
+  // Run a one-time reset to load newly added ebook as requested by the user
+  if (!localStorage.getItem('premium_store_ebooks_reset_v7')) {
+    localStorage.setItem('premium_store_ebooks', JSON.stringify(DEFAULT_PREMIUM_EBOOKS));
+    localStorage.setItem('premium_store_ebooks_reset_v7', 'true');
+  }
+
   const existingBooksJson = localStorage.getItem('premium_store_ebooks');
   let existingBooks: Ebook[] = existingBooksJson ? JSON.parse(existingBooksJson) : [];
   
-  // Remove default preset seed books to only keep books added by the user/admin
-  const seedIds = ['book-tailwind-4', 'book-typescript-patterns', 'book-solopreneur', 'book-react-performance'];
-  existingBooks = existingBooks.filter(book => !seedIds.includes(book.id));
-  
-  localStorage.setItem('premium_store_ebooks', JSON.stringify(existingBooks));
+  if (existingBooks.length === 0) {
+    existingBooks = DEFAULT_PREMIUM_EBOOKS;
+    localStorage.setItem('premium_store_ebooks', JSON.stringify(existingBooks));
+  }
 
   if (!localStorage.getItem('premium_store_orders')) {
     localStorage.setItem('premium_store_orders', JSON.stringify([]));

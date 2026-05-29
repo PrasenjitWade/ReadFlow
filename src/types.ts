@@ -10,6 +10,8 @@ export interface Ebook {
   rating: number;
   created_at: string;
   highlights?: string[]; // key highlights for the detail screen
+  format?: string;
+  file_size?: string;
 }
 
 export interface Profile {
@@ -42,3 +44,4 @@ export interface FAQItem {
   question: string;
   answer: string;
 }
+

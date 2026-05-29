@@ -120,12 +120,12 @@ export const EbookDetailModal: React.FC<EbookDetailModalProps> = ({
               {/* Delivery specifications */}
               <div className="w-full max-w-[280px] mt-6 p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col gap-2 font-mono text-xs text-gray-400">
                 <div className="flex justify-between border-b border-white/5 pb-2">
-                  <span>FORMATS:</span>
-                  <span className="text-white font-medium">PDF, EPUB, MOBI</span>
+                  <span>FORMAT:</span>
+                  <span className="text-white font-medium">{ebook.format || 'PDF, EPUB, MOBI'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>FILE SIZE:</span>
-                  <span className="text-white font-medium">18.4 MB (Digital Download)</span>
+                  <span className="text-white font-medium">{ebook.file_size || '18.4 MB (Digital Download)'}</span>
                 </div>
               </div>
             </div>
@@ -162,28 +162,25 @@ export const EbookDetailModal: React.FC<EbookDetailModalProps> = ({
               </div>
 
               {/* Key Bullet Highlights */}
-              <div className="mb-6">
-                <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-gray-500 mb-3 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> What you will learn inside
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {(ebook.highlights || [
-                    'Comprehensive advanced methodologies',
-                    'Direct file download immediately upon payment',
-                    'Premium quality production boilerplate code',
-                    'Free lifetime updates and notification sync'
-                  ]).map((hl, k) => (
-                    <div key={k} className="flex gap-2.5 items-start">
-                      <div className="h-4.5 w-4.5 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 flex-shrink-0 mt-0.5">
-                        <Check className="w-3 h-3" />
+              {ebook.highlights && ebook.highlights.length > 0 && (
+                <div className="mb-6">
+                  <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-gray-500 mb-3 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> What you will learn inside
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {ebook.highlights.map((hl, k) => (
+                      <div key={k} className="flex gap-2.5 items-start">
+                        <div className="h-4.5 w-4.5 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 flex-shrink-0 mt-0.5">
+                          <Check className="w-3 h-3" />
+                        </div>
+                        <span className="text-xs text-gray-300 font-light leading-snug">
+                          {hl}
+                        </span>
                       </div>
-                      <span className="text-xs text-gray-300 font-light leading-snug">
-                        {hl}
-                      </span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Pricing & instant checkout CTA */}
               <div className="mt-auto border-t border-white/5 pt-5 flex items-center justify-between gap-4">

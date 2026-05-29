@@ -2,7 +2,7 @@ import React from 'react';
 import { BookOpen, Instagram } from 'lucide-react';
 
 interface FooterProps {
-  onNavigate: (view: 'landing' | 'browse' | 'library' | 'admin') => void;
+  onNavigate: (view: 'landing' | 'browse' | 'library') => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
@@ -47,7 +47,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             Author Socials
           </h4>
           <div className="flex gap-3 mt-1">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="p-2 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 text-gray-400 hover:text-white transition-colors" title="Instagram">
+            <a href="https://instagram.com/read_flow_.4" target="_blank" rel="noreferrer" className="p-2 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 text-gray-400 hover:text-white transition-colors" title="Instagram">
               <Instagram className="w-4 h-4" />
             </a>
           </div>
