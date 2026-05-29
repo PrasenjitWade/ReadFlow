@@ -1,0 +1,8 @@
+{
+  "name": "Prasenjit's Ebook Store",
+  "description": "A dark, modern, single-author premium digital ebook store with catalog search, filtering, member library, admin panel, and Supabase database / storage capabilities managed by Prasenjit Wade.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
